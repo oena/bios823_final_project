@@ -1,4 +1,4 @@
-# BIOS823 Final Project: [TBD Team Name] 
+# BIOS823 Final Project:  Team Polar Bear
 
 ## Members
 
