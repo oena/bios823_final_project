@@ -40,5 +40,3 @@ The final product will be a dashboard displaying several fields of the informati
 
 TODO
 
-
-
