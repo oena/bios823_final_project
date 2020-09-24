@@ -1,6 +1,9 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+
 *.py[cod]
+=======
+  *.py[cod]
 *$py.class
 
 # C extensions
@@ -9,6 +12,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
+<<<<<<< HEAD
 develop-eggs/
 dist/
 downloads/
@@ -24,6 +28,23 @@ pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
+=======
+  develop-eggs/
+  dist/
+  downloads/
+  eggs/
+  .eggs/
+  lib/
+  lib64/
+  parts/
+  sdist/
+  var/
+  wheels/
+  pip-wheel-metadata/
+  share/python-wheels/
+  *.egg-info/
+  .installed.cfg
+>>>>>>> 1cde19309670d350424522db08675b5f3c848ff8
 *.egg
 MANIFEST
 
@@ -39,20 +60,35 @@ pip-delete-this-directory.txt
 
 # Unit test / coverage reports
 htmlcov/
+<<<<<<< HEAD
 .tox/
 .nox/
 .coverage
 .coverage.*
 .cache
+=======
+  .tox/
+  .nox/
+  .coverage
+.coverage.*
+  .cache
+>>>>>>> 1cde19309670d350424522db08675b5f3c848ff8
 nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
+<<<<<<< HEAD
 .pytest_cache/
 
 # Translations
 *.mo
+=======
+  .pytest_cache/
+  
+  # Translations
+  *.mo
+>>>>>>> 1cde19309670d350424522db08675b5f3c848ff8
 *.pot
 
 # Django stuff:
@@ -63,13 +99,18 @@ db.sqlite3-journal
 
 # Flask stuff:
 instance/
+<<<<<<< HEAD
 .webassets-cache
+=======
+  .webassets-cache
+>>>>>>> 1cde19309670d350424522db08675b5f3c848ff8
 
 # Scrapy stuff:
 .scrapy
 
 # Sphinx documentation
 docs/_build/
+<<<<<<< HEAD
 
 # PyBuilder
 target/
@@ -80,6 +121,18 @@ target/
 # IPython
 profile_default/
 ipython_config.py
+=======
+  
+  # PyBuilder
+  target/
+  
+  # Jupyter Notebook
+  .ipynb_checkpoints
+
+# IPython
+profile_default/
+  ipython_config.py
+>>>>>>> 1cde19309670d350424522db08675b5f3c848ff8
 
 # pyenv
 .python-version
@@ -93,9 +146,15 @@ ipython_config.py
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
+<<<<<<< HEAD
 
 # Celery stuff
 celerybeat-schedule
+=======
+  
+  # Celery stuff
+  celerybeat-schedule
+>>>>>>> 1cde19309670d350424522db08675b5f3c848ff8
 celerybeat.pid
 
 # SageMath parsed files
@@ -105,6 +164,7 @@ celerybeat.pid
 .env
 .venv
 env/
+<<<<<<< HEAD
 venv/
 ENV/
 env.bak/
@@ -112,6 +172,15 @@ venv.bak/
 
 # Spyder project settings
 .spyderproject
+=======
+  venv/
+  ENV/
+  env.bak/
+  venv.bak/
+  
+  # Spyder project settings
+  .spyderproject
+>>>>>>> 1cde19309670d350424522db08675b5f3c848ff8
 .spyproject
 
 # Rope project settings
@@ -122,8 +191,21 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+<<<<<<< HEAD
 .dmypy.json
+=======
+  .dmypy.json
+>>>>>>> 1cde19309670d350424522db08675b5f3c848ff8
 dmypy.json
 
 # Pyre type checker
 .pyre/
+<<<<<<< HEAD
+=======
+  
+# IPYNB
+.ipynb_checkpoints
+  
+# Data
+data/
+>>>>>>> 1cde19309670d350424522db08675b5f3c848ff8
