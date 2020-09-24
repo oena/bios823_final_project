@@ -10,8 +10,6 @@ Yi Mi (Statistical Science Department, Duke University)
 
 Yue Han (Economics Department, Duke University)
 
-=======
-
 ## Project information
 
 ### Data set
