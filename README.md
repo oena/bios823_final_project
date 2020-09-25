@@ -4,8 +4,6 @@
 
 Oana Enache (Biostatistics Department, Duke University School of Medicine) 
 
-Po-Hung Niu (Economics Department, Duke University)
-
 Yi Mi (Statistical Science Department, Duke University)
 
 Yue Han (Economics Department, Duke University)
@@ -38,5 +36,17 @@ The final product will be a dashboard displaying several fields of the informati
 
 #### Roles, responsibilities, and milestones
 
-TODO
+By October 9th: 
+- Extract relevant fields from trial site, and tidy data (Oana) 
+
+By October 16th:
+- Set up SQL server and load cleaned data (Yi) 
+- Create relevant visualizatiions with plotly (Yue) 
+
+By October 30th:
+- Set up dashboard containing visualizations with Dash (Oana) 
+- Migrate SQL server to AWS (Yi) 
+- Set up dashboard on AWS (Oana, Yue) 
+
+
 
