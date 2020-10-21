@@ -50,3 +50,7 @@ By October 30th:
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fea1b526b66e32c209d18d8b4504dbb3daba599c
