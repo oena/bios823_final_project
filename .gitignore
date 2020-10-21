@@ -208,4 +208,5 @@ dmypy.json
   
 # Data
 data/
+.DS_Store
 >>>>>>> 1cde19309670d350424522db08675b5f3c848ff8
