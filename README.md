@@ -49,8 +49,3 @@ By October 30th:
 - Set up dashboard on AWS (Oana, Yue) 
 
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> fea1b526b66e32c209d18d8b4504dbb3daba599c
