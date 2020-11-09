@@ -48,5 +48,3 @@ By October 30th:
 - Migrate SQL server to AWS (Yi) 
 - Set up dashboard on AWS (Oana, Yue) 
 
-
-
