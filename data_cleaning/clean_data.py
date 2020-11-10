@@ -81,7 +81,7 @@ def pre_processing(filename):
 
     return covid_trials_df
 
-def split_df(df):
+def split_df(covid_trials_df):
     """A function used to split the big covid trail dataframe into several small dataframes in order to follow 3NF.
 
     Parameters
@@ -280,8 +280,24 @@ def checkPK(df, pk):
     else:
         print('Valid PK.')
 
+def clean_and_set_up_db(df_path):
+    covid_trials_df = pre_processing(df_path)
+    study_designs, interventions, outcome_measures, sponsor_collaborators, funded_bys, study_type, trial_info = split_df(covid_trials_df)
+    study_designs_new = process_study_design(study_designs)
+    interventions_new = process_intervention(interventions)
 
-if __name__ == "__main__": 
+    conn = sqlite3.connect('covid_trials.db')
+    study_designs.to_sql('study_designs', conn, if_exists='replace', index=False)
+    interventions.to_sql('interventions', conn, if_exists='replace', index=False)
+    trial_info.to_sql('trial_info', conn, if_exists='replace', index=False)
+    outcome_measures.to_sql('outcome_measures', conn, if_exists='replace', index=False)
+    sponsor_collaborators.to_sql('sponsor_collaborators', conn, if_exists='replace', index=False)
+    funded_bys.to_sql('funded_bys', conn, if_exists='replace', index=False)
+    study_type.to_sql('study_type', conn, if_exists='replace', index=False)
+
+
+if __name__ == "__main__":
+    # TODO: consider changing this to call method above
     covid_trials_df = pre_processing("SearchResults_new.tsv")
     study_designs, interventions, outcome_measures, sponsor_collaborators, funded_bys, study_type, trial_info = split_df(covid_trials_df)
     study_designs_new = process_study_design(study_designs)
