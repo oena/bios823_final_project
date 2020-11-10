@@ -9,7 +9,7 @@ st.set_page_config(layout="wide")
 @st.cache()
 def load_datasets():
     # All US clinical trials
-    data_df = pd.read_csv("data/cleaned_us_covid_studies_with_geo_092020.tsv", sep="\t")
+    data_df = pd.read_csv("../data/cleaned_us_covid_studies_with_geo_092020.tsv", sep="\t")
     all_us_data = data_df.dropna()
     return all_us_data
 
@@ -122,11 +122,9 @@ with st.beta_container():
                              "Number of COVID hospitalizations",
                              "Predicted COVID status (are locations getting better or getting worse?)"])
 
-    # Evaluate which color to display
-
     # Plot map
     count_df= filter_dataset(us_study_data,
-                              state_value,
+                  state_value,
                   intervention_type,
                   intervention,
                   radio_display,
