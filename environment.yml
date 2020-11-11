@@ -150,7 +150,6 @@ dependencies:
     - jupyter-core==4.6.1
     - jupyterlab==2.2.8
     - jupyterlab-server==1.2.0
-    - launch-ec2-instance==0.1
     - llvmlite==0.34.0
     - matplotlib==3.3.2
     - missingno==0.4.2
