@@ -120,7 +120,8 @@ def split_df(covid_trials_df):
 
     trial_into_list = ['NCT Number', 'Title', 'Locations', 'Status', 'Study Results', 'Conditions',
                    'Gender', 'Age', 'Phases','Enrollment', 'URL', 'Location_Country', 'Location_City_or_State',
-                   'Location_Institution', 'Start Date', 'Completion Date', 'First Posted','Last Update Posted']
+                   'Location_Institution', 'Start Date', 'Completion Date', 'First Posted','Last Update Posted',
+                   'Funded Bys', 'Study Type']
     trial_info = covid_trials_df[trial_into_list].drop_duplicates()
 
     outcome_measures = outcome_measures.assign(**{'Outcome Measures':outcome_measures['Outcome Measures'].str.split('|')})
