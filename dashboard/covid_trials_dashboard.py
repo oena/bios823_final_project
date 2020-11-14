@@ -1,15 +1,17 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import numpy as np
 
 # Page configuration -- set to wide
 st.set_page_config(layout="wide")
+px.set_mapbox_access_token("pk.eyJ1Ijoib2VuYWNoZSIsImEiOiJjazM2NWVwcmUxZnc3M2JvcXVvbjJiN2dpIn0.WZidyL9W3mlaLbM0TvAVXQ")
 
 # Methods to load and change data
 @st.cache()
 def load_datasets():
     # All US clinical trials
-    data_df = pd.read_csv("../data/cleaned_us_covid_studies_with_geo_092020.tsv", sep="\t")
+    data_df = pd.read_csv("/Users/oana/Documents/github/bios823_final_project/data/cleaned_us_covid_studies_with_geo_092020.tsv", sep="\t")
     all_us_data = data_df.dropna()
     return all_us_data
 
@@ -46,10 +48,13 @@ def filter_dataset(all_us_data,
     # Filter if needed
     if state_selection != "All available states":
         all_us_data = all_us_data[all_us_data["Location_City_or_State"] == state_selection]
+        print(all_us_data.shape)
     if intervention_selection != "All available interventions":
         all_us_data = all_us_data[all_us_data["Intervention Type"] == intervention_selection]
+        print(all_us_data.shape)
     if drug_selection != "All available drugs & biologics":
         all_us_data = all_us_data[all_us_data["Drug Type"] == drug_selection]
+        print(all_us_data.shape)
 
     if output_type == "data":
         return all_us_data
@@ -64,9 +69,10 @@ def filter_dataset(all_us_data,
             out_df.reset_index(inplace=True)
             out_df.columns = ['Institution', 'Latitude', 'Longitude', "Number of interventions"]
         elif map_display == "Trial statuses":
-            out_df = pd.DataFrame(all_us_data.groupby.groupby(["Location_Institution", "lat", "lon"])["Status"].agg(["unique"]))
+            out_df = pd.DataFrame(all_us_data.groupby(["Location_Institution", "lat", "lon"])["Status"].agg(["unique"]))
             out_df.reset_index(inplace=True)
             out_df.columns = ['Institution', 'Latitude', 'Longitude', "Trial statuses"]
+            out_df["Trial statuses"] = [i[0] for i in out_df["Trial statuses"].values]
         return out_df
 
 # Load data initially
@@ -78,6 +84,7 @@ data_load_state.text("")
 # Page title
 st.title("What kinds of COVID-19 trials are happening in the US?")
 st.header("An interactive tool to explore ongoing clinical trial efforts")
+
 with st.beta_expander("Click here to expand more details about this dashboard"):
     st.subheader("About this data:")
     st.markdown("There are two primary sources for this dashboard: \n "
@@ -96,10 +103,13 @@ with st.beta_expander("Click here to expand more details about this dashboard"):
 st.sidebar.subheader("Filter trial information:")
 state_value = st.sidebar.selectbox("Find trials by state:",
                                    filter_options["by_state"])
+st.sidebar.write(state_value)
 intervention_type = st.sidebar.selectbox("Find trials by intervention type:",
                                          filter_options["by_intervention_type"])
+st.sidebar.write(intervention_type)
 intervention = st.sidebar.selectbox("Find trials by drugs/biologics being studied: ",
                                     filter_options["by_drug"])
+st.sidebar.write(intervention)
 show_data_table = st.sidebar.checkbox("Show study information fulfilling above criteria")
 
 
@@ -121,25 +131,38 @@ with st.beta_container():
                              "Trial statuses",
                              "Number of COVID hospitalizations",
                              "Predicted COVID status (are locations getting better or getting worse?)"])
+    c2.write(radio_display)
 
     # Plot map
-    count_df= filter_dataset(us_study_data,
+    filtered_count_df = filter_dataset(us_study_data,
                   state_value,
                   intervention_type,
                   intervention,
                   radio_display,
                    "count")
-    count_map = px.scatter_mapbox(count_df,
-                            lat="Latitude",
-                            lon="Longitude",
-                            color=radio_display,
-                            size=radio_display,
-                            color_discrete_sequence=px.colors.sequential.Plasma_r,
-                            hover_name="Institution",
-                            mapbox_style="light",
-                            zoom=2)
+    # Color palette type needs to change depending on what's displayed
+    if radio_display == "Trial statuses":
+        count_map = px.scatter_mapbox(filtered_count_df,
+                        lat="Latitude",
+                        lon="Longitude",
+                        color=radio_display,
+                        hover_name="Institution",
+                        mapbox_style="light",
+                        zoom=2)
+    else:
+        count_map = px.scatter_mapbox(filtered_count_df,
+                                lat="Latitude",
+                                lon="Longitude",
+                                color=radio_display,
+                                size=radio_display,
+                                #color_discrete_sequence=color_palette,
+                                hover_name="Institution",
+                                mapbox_style="light",
+                                zoom=2)
     count_map.update_layout(width=1100, height=600)
     c1.plotly_chart(count_map)
+
+st.write(filtered_count_df)
 
 # Supplementary plots
 # TODO -- Yue to add, hopefully
