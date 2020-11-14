@@ -47,7 +47,7 @@ from yellowbrick.model_selection import (
 
 # 1. comapare model plot
 def compare_model_plot():
-    compare_model_df = pd.read_csv("compare_model_df.csv")
+    compare_model_df = pd.read_csv("data/compare_model_df.csv")
     compare_model_df1 = pd.melt(compare_model_df, id_vars=['Model'], var_name='Measurement', value_name='Score')
     fig = px.line(compare_model_df1, x="Measurement", y="Score", color="Model",hover_name="Model",
                 title='Measurement score of different models')
