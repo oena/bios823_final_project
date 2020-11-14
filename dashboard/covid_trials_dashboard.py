@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import numpy as np
+import base64
 
 # Page configuration -- set to wide
 st.set_page_config(layout="wide")
@@ -25,6 +25,12 @@ def load_filtering_options(all_us_data):
     states_list.insert(0, "All available states")
     filter_options["by_state"] = states_list
 
+    # Phase
+    phase_list = list(all_us_data["Phases"].unique())
+    phase_list.sort()
+    phase_list.insert(0, "All phases")
+    filter_options["by_phase"] = phase_list
+
     # interventions represented
     intervention_type_list = list(all_us_data["Intervention Type"].unique())
     intervention_type_list.sort()
@@ -40,18 +46,10 @@ def load_filtering_options(all_us_data):
     return filter_options
 
 def filter_dataset(all_us_data,
-                       state_selection,
-                       intervention_selection,
                        drug_selection,
                        map_display,
                    output_type):
     # Filter if needed
-    if state_selection != "All available states":
-        all_us_data = all_us_data[all_us_data["Location_City_or_State"] == state_selection]
-        print(all_us_data.shape)
-    if intervention_selection != "All available interventions":
-        all_us_data = all_us_data[all_us_data["Intervention Type"] == intervention_selection]
-        print(all_us_data.shape)
     if drug_selection != "All available drugs & biologics":
         all_us_data = all_us_data[all_us_data["Drug Type"] == drug_selection]
         print(all_us_data.shape)
@@ -68,12 +66,33 @@ def filter_dataset(all_us_data,
             out_df = pd.DataFrame(all_us_data.groupby(["Location_Institution", "lat", "lon"])["Interventions"].nunique())
             out_df.reset_index(inplace=True)
             out_df.columns = ['Institution', 'Latitude', 'Longitude', "Number of interventions"]
-        elif map_display == "Trial statuses":
-            out_df = pd.DataFrame(all_us_data.groupby(["Location_Institution", "lat", "lon"])["Status"].agg(["unique"]))
+        elif map_display == "Trial enrollment status":
+            out_df = pd.DataFrame(all_us_data.groupby(["Location_Institution", "lat", "lon", "Enrollment"])["Status"].agg(["unique"]))
             out_df.reset_index(inplace=True)
-            out_df.columns = ['Institution', 'Latitude', 'Longitude', "Trial statuses"]
-            out_df["Trial statuses"] = [i[0] for i in out_df["Trial statuses"].values]
+            out_df.columns = ['Institution', 'Latitude', 'Longitude', "Enrollment", "Trial enrollment status"]
+            out_df["Trial enrollment status"] = [i[0] for i in out_df["Trial enrollment status"].values]
         return out_df
+
+def download_link(object_to_download, download_filename, download_link_text):
+    """
+    Generates a link to download the given object_to_download.
+
+    object_to_download (str, pd.DataFrame):  The object to be downloaded.
+    download_filename (str): filename and extension of file. e.g. mydata.csv, some_txt_output.txt
+    download_link_text (str): Text to display for download link.
+
+    Examples:
+    download_link(YOUR_DF, 'YOUR_DF.csv', 'Click here to download data!')
+    download_link(YOUR_STRING, 'YOUR_STRING.txt', 'Click here to download your text!')
+
+    """
+    if isinstance(object_to_download,pd.DataFrame):
+        object_to_download = object_to_download.to_csv(index=False)
+
+    # some strings <-> bytes conversions necessary here
+    b64 = base64.b64encode(object_to_download.encode()).decode()
+
+    return f'<a href="data:file/txt;base64,{b64}" download="{download_filename}">{download_link_text}</a>'
 
 # Load data initially
 data_load_state = st.text("Loading data...")
@@ -101,15 +120,29 @@ with st.beta_expander("Click here to expand more details about this dashboard"):
 
 # Sidebar to switch between study locations and latest covid rates
 st.sidebar.subheader("Filter trial information:")
-state_value = st.sidebar.selectbox("Find trials by state:",
+
+state_value = st.sidebar.selectbox("Filter trials by state:",
                                    filter_options["by_state"])
-st.sidebar.write(state_value)
+if state_value != "All available states":
+    us_study_data = us_study_data[us_study_data["Location_City_or_State"] == state_value]
+    filter_options = load_filtering_options(us_study_data)
+
+phase_value = st.sidebar.selectbox("Filter trials by phase:",
+                                   filter_options["by_phase"])
+if phase_value != "All phases":
+    us_study_data = us_study_data[us_study_data["Phases"] == phase_value]
+    filter_options = load_filtering_options(us_study_data)
+
 intervention_type = st.sidebar.selectbox("Find trials by intervention type:",
                                          filter_options["by_intervention_type"])
-st.sidebar.write(intervention_type)
+if intervention_type != "All available interventions":
+    us_study_data = us_study_data[us_study_data["Intervention Type"] == intervention_type]
+    filter_options = load_filtering_options(us_study_data)
+
 intervention = st.sidebar.selectbox("Find trials by drugs/biologics being studied: ",
                                     filter_options["by_drug"])
-st.sidebar.write(intervention)
+st.sidebar.write("Note. A biologic (aka biological) is a drug made from living organisms (or components thereof).")
+
 show_data_table = st.sidebar.checkbox("Show study information fulfilling above criteria")
 
 
@@ -118,7 +151,6 @@ show_data_table = st.sidebar.checkbox("Show study information fulfilling above c
 with st.beta_container():
     # Map title
     st.subheader("Count of ongoing COVID clinical trials by institute")
-    st.write("As of 09/20/20")
 
     # Map layout
     c1, c2 = st.beta_columns([5,2])
@@ -128,24 +160,22 @@ with st.beta_container():
     radio_display = c2.radio("Choose one of:",
                     options=["Number of ongoing trials",
                              "Number of interventions",
-                             "Trial statuses",
+                             "Trial enrollment status",
                              "Number of COVID hospitalizations",
                              "Predicted COVID status (are locations getting better or getting worse?)"])
-    c2.write(radio_display)
 
     # Plot map
     filtered_count_df = filter_dataset(us_study_data,
-                  state_value,
-                  intervention_type,
                   intervention,
                   radio_display,
                    "count")
     # Color palette type needs to change depending on what's displayed
-    if radio_display == "Trial statuses":
+    if radio_display == "Trial enrollment status":
         count_map = px.scatter_mapbox(filtered_count_df,
                         lat="Latitude",
                         lon="Longitude",
                         color=radio_display,
+                        size="Enrollment",
                         hover_name="Institution",
                         mapbox_style="light",
                         zoom=2)
@@ -162,7 +192,7 @@ with st.beta_container():
     count_map.update_layout(width=1100, height=600)
     c1.plotly_chart(count_map)
 
-st.write(filtered_count_df)
+#st.write(filtered_count_df)
 
 # Supplementary plots
 # TODO -- Yue to add, hopefully
@@ -180,10 +210,21 @@ with st.beta_container():
 if show_data_table:
     with st.beta_container():
         st.subheader("Summary table of key trial information")
+        cols_to_keep = ["NCT Number",
+                        "Title",
+                        "Phases",
+                        "Status",
+                        "Enrollment",
+                        "Location_City_or_State",
+                        "Location_Institution",
+                        "Address",
+                        "URL"]
         filtered_data = filter_dataset(us_study_data,
-                              state_value,
-                  intervention_type,
                   intervention,
                   radio_display,
                   "data")
-        st.write(filtered_data)
+        filtered_data_display = filtered_data[cols_to_keep].drop_duplicates()
+        st.write(filtered_data_display)
+        if st.button('Download Dataframe as CSV'):
+            tmp_download_link = download_link(filtered_data_display, 'covid_trials_information.csv', 'Click here to download your data!')
+            st.markdown(tmp_download_link, unsafe_allow_html=True)
