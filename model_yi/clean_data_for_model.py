@@ -11,7 +11,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 
 ### read data
-covid_trials_df = pd.read_csv("SearchResults_new.tsv", sep="\t")
+covid_trials_df = pd.read_csv("data/SearchResults_new.tsv", sep="\t")
 
 ### column of interests
 columns_of_interest = ['NCT Number', 'Title', 'Locations', 'Status', 'Study Results', 'Conditions', 
