@@ -9,7 +9,7 @@ def app():
     # methods to load and change data
     @st.cache()
     def load_datasets():
-        return pd.read_csv("dashboard/cleaned_data_for_viz.tsv", sep="\t")
+        return pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_viz.tsv", sep="\t")
     
     def filter_dataset(df, start, end, study_type):
         df = (
