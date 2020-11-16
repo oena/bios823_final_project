@@ -11,7 +11,7 @@ px.set_mapbox_access_token("pk.eyJ1Ijoib2VuYWNoZSIsImEiOiJjazM2NWVwcmUxZnc3M2Jvc
 @st.cache()
 def load_datasets():
     # All US clinical trials
-    data_df = pd.read_csv("../data/cleaned_us_covid_studies_with_geo_092020.tsv", sep="\t")
+    data_df = pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_us_covid_studies_with_geo_092020.tsv", sep="\t")
     all_us_data = data_df.dropna()
     return all_us_data
 
