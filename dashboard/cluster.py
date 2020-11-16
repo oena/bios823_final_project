@@ -8,7 +8,7 @@ import sqlite3
 import plotly.express as px
 
 def get_data_for_cluster():
-    return pd.read_csv("cleaned_data_for_cluster.tsv", sep="\t",index_col=0)
+    return pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_cluster.tsv", sep="\t",index_col=0)
 
 def choose_feature(df=get_data_for_cluster(), feature_type="basic info"):
     """
