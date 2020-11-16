@@ -21,7 +21,7 @@ def get_gdf():
     this function will load country geo data, which is necessary for creating map plot
     """
     # load the data of geo information
-    shapefile = '50m_cultural/ne_50m_admin_0_countries.shp'
+    shapefile = 'https://github.com/oena/bios823_final_project/blob/master/dashboard/50m_cultural/ne_50m_admin_0_countries.shp?raw=true'
     gdf = gpd.read_file(shapefile)[['ADMIN', 'geometry']]
     gdf = gdf[gdf.ADMIN != 'Antarctica']  # drop Antarctica since no people lives there
     gdf['ADMIN'] = gdf.ADMIN.apply(lambda x: x.upper())
