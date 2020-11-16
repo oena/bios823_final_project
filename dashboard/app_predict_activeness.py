@@ -56,8 +56,8 @@ def app():
                                          "CatBoostClassifier",
                                          "DummyClassifier"])
     
-    st.title('Activeness classification')
-    st.header('We use several different classifiers to classify the active status of trials.')
+    st.title('Trials opening status classification')
+    st.header('We use several different classifiers to classify the opening status of trials.')
     
     with st.beta_expander("Click here to expand more details about the classifaction"):
         st.subheader("Say something below:")
@@ -133,7 +133,7 @@ def app():
     cm = cm.astype(int)
     fig_ = px.imshow(cm, title=f'Confusion Matrix',
                      labels=dict(x="Pred", y="True", color=""),
-                     x=['Not active','Active'], y=['Not active','Active'], width=700, height=500,template="plotly_white")
+                     x=['Closed','Open'], y=['Closed','Open'], width=700, height=500,template="plotly_white")
 
     with st.beta_container():
         st.subheader("Model Plotss")
