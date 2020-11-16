@@ -60,10 +60,16 @@ def app():
     st.header('We use several different classifiers to classify the opening status of trials.')
     
     with st.beta_expander("Click here to expand more details about the classifaction"):
-        st.subheader("Say something below:")
+        st.subheader("Detail about trials opening status classification")
         st.markdown(
             """
-            detail about classification to add...
+            According to official documentation of trial data, we can classify the status into “Open” or “Closed”. 
+            We thus further preprocessing the data by deeply cleaning the text information, unifying labels, 
+            handling missing data with imputation and resampling imbalanced data. 
+            We then applied different classifiers to classify activeness and compared the performance based on several metrics. 
+            In our dashboard page, we allow users to select one metric to compare the classifiers, and one classifier to display ROC Curve, 
+            Precision-Recall Curve and Confusion Matrix.
+            They all are implemented by Plotly and support interaction.
             """
         )
 
