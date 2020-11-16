@@ -13,7 +13,7 @@ PAGES = {
     "Overall trials": app_viz,
     "Us trials": app_us_trial,
     "Trials clustering": app_cluster,
-    "Activeness predicting" : app_predict_activeness
+    "Trials opening status" : app_predict_activeness
 }
 st.sidebar.title('Navigation')
 selection = st.sidebar.selectbox("Go to page:", list(PAGES.keys()))
