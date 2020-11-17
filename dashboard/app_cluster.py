@@ -91,18 +91,14 @@ def app():
                                plot_bgcolor='rgba(0,0,0,0)')
     st.plotly_chart(plot, use_container_width=True)
     
-    st.write("")
-    
     # centroids
-    st.subheader("Centroid of each cluster")
     if show_centroid:
+        st.subheader("Centroid of each cluster")
         st.write(cluster_centroids)
-        
-    st.write("")
     
     # cluster table
-    st.subheader("Table of trials with preidcted cluster")
     if show_cluster_table:
+        st.subheader("Table of trials with preidcted cluster")
         st.write(df_with_cluster)
     
     
