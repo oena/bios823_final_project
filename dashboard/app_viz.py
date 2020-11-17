@@ -101,31 +101,34 @@ def app():
                                     "oceania"
                                     ],
                                     format_func=options_show)
-        map_data.shape[0]
-        number_to_display = c2.number_input("Select how many results to display", min_value = 1, max_value = map_data.shape[0], value = 5, step = 1)
-        countries = c2.multiselect("Choose the countries you interested in:", map_data.head(number_to_display)
-.Location_Country.to_list(), default = map_data.head(number_to_display)
-.Location_Country.to_list())
+                                    
+        advanced_select = c2.checkbox("Advanced select")
+        if advanced_select:
+            map_data.shape[0]
+            number_to_display = c2.number_input("Select top countires to display", min_value = 1, max_value = map_data.shape[0], value = 5, step = 1)
+            countries = c2.multiselect("Choose the countries you interested in:", map_data.head(number_to_display)
+    .Location_Country.to_list(), default = map_data.head(number_to_display)
+    .Location_Country.to_list())
+                    
+            countries_select_map_data = [x in countries for x in map_data.Location_Country]
+            map_data["if_select"] = countries_select_map_data
+            countries_select_gdf = [x in countries for x in gdf.ADMIN]
+            gdf["if_select"] = countries_select_gdf
+
+            map_data = map_data[map_data["if_select"] == True].head(number_to_display)
+
+            gdf = gdf[gdf["if_select"] == True].head(number_to_display)
+
+                
+            map_data = map_data.head(number_to_display)
+
+            gdf = gdf.head(number_to_display)
+        
         show_table = c2.checkbox("Show table")
         
-        countries_select_map_data = [x in countries for x in map_data.Location_Country]
-        map_data["if_select"] = countries_select_map_data
-        countries_select_gdf = [x in countries for x in gdf.ADMIN]
-        gdf["if_select"] = countries_select_gdf
-
-        map_data = map_data[map_data["if_select"] == True].head(number_to_display)
-
-        gdf = gdf[gdf["if_select"] == True].head(number_to_display)
-
-            
-        map_data = map_data.head(number_to_display)
-
-        gdf = gdf.head(number_to_display)
-
-            
         c1.plotly_chart(viz.get_country_plot(map_data, gdf, center=radio_display), use_container_width=True)
         if show_table:
-            c1.write(map_data)
+            c1.write(map_data.drop(columns = "if_select"))
     
     
     ## bar and pie plot
