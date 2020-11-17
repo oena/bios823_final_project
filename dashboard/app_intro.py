@@ -3,6 +3,13 @@ from PIL import Image
 
 def app():
     st.sidebar.subheader("Who we are?")
+    st.sidebar.markdown(
+    """
+        Oana Enache (Biostatistics Department, Duke University School of Medicine) \n
+        Yi Mi (Statistical Science Department, Duke University) \n
+        Yue Han (Economics Department, Duke University)
+    """
+    )
     st.sidebar.subheader("[Link](https://github.com/oena/bios823_final_project) to GitHub")
     
     st.title('Welcome to COVID-19 Trial Dashboard!')

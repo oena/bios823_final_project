@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import geopandas as gpd
+from shapely import wkt
 import numpy as np
 from datetime import datetime
 import json
@@ -9,20 +10,19 @@ import viz
 
 def app():
     # methods to load and change data
-    @st.cache()
+    @st.cache(allow_output_mutation=True)
     def load_datasets():
-        return pd.read_csv("https://github.com/oena/bios823_final_project/blob/master/dashboard/dashboard_data/cleaned_data_for_viz.tsv", sep="\t")
+        return pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_viz.tsv", sep="\t")
         
-    @st.cache()
+    @st.cache(allow_output_mutation=True)
     def loag_data_for_map():
-        return pd.read_csv("https://github.com/oena/bios823_final_project/blob/master/dashboard/dashboard_data/cleaned_data_for_map.tsv", sep="\t")
+        return pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_map.tsv", sep="\t")
     
-    @st.cache()
+    @st.cache(allow_output_mutation=True)
     def load_geo_data():
-        gdf = gpd.read_file("https://github.com/oena/bios823_final_project/blob/master/dashboard/dashboard_data/cleaned_data_for_map_with_geo.tsv",GEOM_POSSIBLE_NAMES="geometry",KEEP_GEOM_COLUMNS="NO")
-        gdf["count"] = gdf["count"].replace({"":0})
-        gdf = gdf.astype({"count":"float"})
-        gdf["count"] = gdf["count"].replace({0:np.nan})
+        df =pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_map_with_geo.tsv",sep="\t")
+        df['geometry'] = df['geometry'].apply(wkt.loads)
+        gdf = gpd.GeoDataFrame(df, geometry='geometry')
         return gdf
     
     def filter_dataset(df, start, end, study_type):
@@ -101,8 +101,31 @@ def app():
                                     "oceania"
                                     ],
                                     format_func=options_show)
+        map_data.shape[0]
+        number_to_display = c2.number_input("Select how many results to display", min_value = 1, max_value = map_data.shape[0], value = 5, step = 1)
+        countries = c2.multiselect("Choose the countries you interested in:", map_data.head(number_to_display)
+.Location_Country.to_list(), default = map_data.head(number_to_display)
+.Location_Country.to_list())
+        show_table = c2.checkbox("Show table")
+        
+        countries_select_map_data = [x in countries for x in map_data.Location_Country]
+        map_data["if_select"] = countries_select_map_data
+        countries_select_gdf = [x in countries for x in gdf.ADMIN]
+        gdf["if_select"] = countries_select_gdf
 
+        map_data = map_data[map_data["if_select"] == True].head(number_to_display)
+
+        gdf = gdf[gdf["if_select"] == True].head(number_to_display)
+
+            
+        map_data = map_data.head(number_to_display)
+
+        gdf = gdf.head(number_to_display)
+
+            
         c1.plotly_chart(viz.get_country_plot(map_data, gdf, center=radio_display), use_container_width=True)
+        if show_table:
+            c1.write(map_data)
     
     
     ## bar and pie plot

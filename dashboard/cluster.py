@@ -83,7 +83,7 @@ def get_cluster(df=choose_feature()):
     best_para_dict = {"n_clusters":best_para[1], "init":best_para[0]}
 
     # fit model
-    km = KModes(**best_para_dict, n_init = 3,verbose=0)
+    km = KModes(**best_para_dict, n_init = 1, random_state=1, verbose=0)
 
     return km
     
@@ -132,7 +132,7 @@ def plot_cluster(df_with_cluster=get_clustered_data()[0], feature="Study Type"):
                   x="Cluster Predicted",
                   y="count",
                   color=feature,
-                  color_discrete_sequence=px.colors.sequential.thermal,
+                  color_discrete_sequence=px.colors.qualitative.Set3,
                   barmode='group')
 
     return plot

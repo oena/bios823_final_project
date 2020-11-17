@@ -75,10 +75,12 @@ def app():
     )
     
     with st.beta_expander("Click here to expand more details about our cluster model"):
-        st.subheader("Say something about the model:")
+        st.subheader("K-Mode cluster introduction:")
         st.markdown(
             """
-            say something here...
+            We use K-Mode algorithm for our cluster model beacuse our dataset is fully composed of catgorical data, and we cannot apply K-Mean since "distance" is meaningless for categorical dataset. \n
+            What K-Mode do is basically the same as K-Mean, except it choose the mode in each feature as the center instead of mean. For example, if our dataset is students from different contries, for the initial cluster, in cluster 1, 5 students come from US, 3 from China, 2 from Japan, so the centroid of this cluster is US. The rest steps of K-Mode are exactly the same as K-mean. \n
+            To implement this algorithm, we use the package `kmodes`, and you can refer to this [site](https://pypi.org/project/kmodes/) for more information.
             """
         )
     # plot

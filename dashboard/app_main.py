@@ -11,7 +11,7 @@ st.set_page_config(layout="wide")
 PAGES = {
     "Homepage": app_intro,
     "Overall trials": app_viz,
-    "Us trials": app_us_trial,
+    "US trials": app_us_trial,
     "Trials clustering": app_cluster,
     "Trials opening status" : app_predict_activeness
 }
