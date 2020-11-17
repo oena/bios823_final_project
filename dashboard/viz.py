@@ -14,7 +14,7 @@ import plotly.express as px
 # get data functions ###################################################################################################
 
 def get_df():
-    return pd.read_csv("cleaned_data_for_viz.tsv", sep="\t")
+    return pd.read_csv("https://github.com/oena/bios823_final_project/blob/master/dashboard/dashboard_data/cleaned_data_for_viz.tsv", sep="\t")
 
 def get_gdf():
     """
