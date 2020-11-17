@@ -11,15 +11,15 @@ def app():
     # methods to load and change data
     @st.cache()
     def load_datasets():
-        return pd.read_csv("cleaned_data_for_viz.tsv", sep="\t")
+        return pd.read_csv("https://github.com/oena/bios823_final_project/blob/master/dashboard/dashboard_data/cleaned_data_for_viz.tsv", sep="\t")
         
     @st.cache()
     def loag_data_for_map():
-        return pd.read_csv("cleaned_data_for_map.tsv", sep="\t")
+        return pd.read_csv("https://github.com/oena/bios823_final_project/blob/master/dashboard/dashboard_data/cleaned_data_for_map.tsv", sep="\t")
     
     @st.cache()
     def load_geo_data():
-        gdf = gpd.read_file("/Users/yuehan/Desktop/Duke/20Fall/BIOSTA823/final_project/dash/cleaned_data_for_map_with_geo.tsv",GEOM_POSSIBLE_NAMES="geometry",KEEP_GEOM_COLUMNS="NO")
+        gdf = gpd.read_file("https://github.com/oena/bios823_final_project/blob/master/dashboard/dashboard_data/cleaned_data_for_map_with_geo.tsv",GEOM_POSSIBLE_NAMES="geometry",KEEP_GEOM_COLUMNS="NO")
         gdf["count"] = gdf["count"].replace({"":0})
         gdf = gdf.astype({"count":"float"})
         gdf["count"] = gdf["count"].replace({0:np.nan})
