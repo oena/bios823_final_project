@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import geopandas as gpd
+import numpy as np
 from datetime import datetime
 import json
 from dateutil.relativedelta import relativedelta
@@ -9,7 +11,19 @@ def app():
     # methods to load and change data
     @st.cache()
     def load_datasets():
-        return pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_viz.tsv", sep="\t")
+        return pd.read_csv("cleaned_data_for_viz.tsv", sep="\t")
+        
+    @st.cache()
+    def loag_data_for_map():
+        return pd.read_csv("cleaned_data_for_map.tsv", sep="\t")
+    
+    @st.cache()
+    def load_geo_data():
+        gdf = gpd.read_file("/Users/yuehan/Desktop/Duke/20Fall/BIOSTA823/final_project/dash/cleaned_data_for_map_with_geo.tsv",GEOM_POSSIBLE_NAMES="geometry",KEEP_GEOM_COLUMNS="NO")
+        gdf["count"] = gdf["count"].replace({"":0})
+        gdf = gdf.astype({"count":"float"})
+        gdf["count"] = gdf["count"].replace({0:np.nan})
+        return gdf
     
     def filter_dataset(df, start, end, study_type):
         df = (
@@ -24,7 +38,9 @@ def app():
     # load in data
     df_origin = load_datasets()
     df = df_origin.copy()
-    gdf = viz.get_gdf()
+    
+    map_data = loag_data_for_map()
+    gdf = load_geo_data()
 
     # sidebar control
     st.sidebar.subheader("Choose time interval:")
@@ -86,9 +102,8 @@ def app():
                                     ],
                                     format_func=options_show)
 
-        c1.plotly_chart(viz.get_country_plot(*viz.get_data_for_map(df, gdf), center=radio_display), use_container_width=True)
+        c1.plotly_chart(viz.get_country_plot(map_data, gdf, center=radio_display), use_container_width=True)
     
-    st.write("")
     
     ## bar and pie plot
     st.subheader(f'Bar and pie chart for count of COVID-19 trials by **{attribute_display.lower()}** attribution')
@@ -123,13 +138,13 @@ def app():
             pie_plot = viz.get_cat_plot(df=df, var=attribute_display, type="pie")
 
             
-        bar_plot.update_layout(margin={"r": 0, "t": 10, "l": 0, "b": 0},
+        bar_plot.update_layout(margin={"r": 0, "t": 30, "l": 0, "b": 0},
                                height=400,
                                plot_bgcolor='rgba(0,0,0,0)')
         
         c3.plotly_chart(bar_plot, use_container_width=True)
         
-        pie_plot.update_layout(margin={"r": 0, "t": 10, "l": 0, "b": 0},
+        pie_plot.update_layout(margin={"r": 0, "t": 30, "l": 0, "b": 0},
                                height=400,
                                plot_bgcolor='rgba(0,0,0,0)')
         c4.plotly_chart(pie_plot, use_container_width=True)
