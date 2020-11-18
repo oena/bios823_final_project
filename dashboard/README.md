@@ -5,7 +5,7 @@ The deployed dashboard can be found [here](https://share.streamlit.io/oena/bios8
 This folder contains:
 - All the files comprising different pages of the dashboard app (these begin with `app_`)
 - Two auxiliary files: `viz.py` and `cluster.py`
-- Dashboard assets (input files for visualizations, etc). Since expensive computations can slow streamlit apps down, we tried to minimize these if possible. 
+- Dashboard assets in dashboard_data/ (these are input files for visualizations, etc). Since expensive computations can slow streamlit apps down, we tried to minimize these if possible. 
 
 ### Running the dashboard locally 
 
