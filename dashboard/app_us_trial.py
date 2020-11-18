@@ -9,6 +9,12 @@ def app():
     # Methods to load and change data
     @st.cache()
     def load_datasets():
+        """
+        Loads dataset of US trial information only; this is a portion of the global trial information, with additional location information added using `geopy`. 
+        
+        Returns: 
+        - all_us_data (pd.DataFrame): information for of all ongoing COVID19 trials in the US
+        """
         # All US clinical trials
         data_df = pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_us_covid_studies_with_geo_092020.tsv", sep="\t")
         all_us_data = data_df.dropna()
@@ -16,6 +22,12 @@ def app():
 
     @st.cache()
     def load_filtering_options(all_us_data):
+        """
+        Loads filtering options for sidebar based on current dataset being used. 
+        
+        Returns:
+        - filtering_options (dict): contains filter options as keys and available choices as values. 
+        """
         filter_options = {}
 
         # states represented
@@ -48,6 +60,18 @@ def app():
                            drug_selection,
                            map_display,
                        output_type):
+        """
+        Filters dataset of US trials by choices selected
+        
+        Parameters:
+        - all_us_data (pd.DataFrame): information for of all ongoing COVID19 trials in the US (possibly filtered)
+        - drug_selection (str): specific drug or biologic selected by user
+        - map_display (str): user selection for what information to display on US map
+        - output_type (str; must be "data" or "count"): what type of output to return 
+        
+        Returns: 
+        - 
+        """
         # Filter if needed
         if drug_selection != "All available drugs & biologics":
             all_us_data = all_us_data[all_us_data["Drug Type"] == drug_selection]
@@ -75,15 +99,14 @@ def app():
     def download_link(object_to_download, download_filename, download_link_text):
         """
         Generates a link to download the given object_to_download.
+        
+        Parameters:
+        - object_to_download (str, pd.DataFrame):  The object to be downloaded.
+        - download_filename (str): filename and extension of file. e.g. mydata.csv, some_txt_output.txt
+        - download_link_text (str): Text to display for download link.
 
-        object_to_download (str, pd.DataFrame):  The object to be downloaded.
-        download_filename (str): filename and extension of file. e.g. mydata.csv, some_txt_output.txt
-        download_link_text (str): Text to display for download link.
-
-        Examples:
-        download_link(YOUR_DF, 'YOUR_DF.csv', 'Click here to download data!')
-        download_link(YOUR_STRING, 'YOUR_STRING.txt', 'Click here to download your text!')
-
+        Returns:
+        - A download link for object specified. 
         """
         if isinstance(object_to_download,pd.DataFrame):
             object_to_download = object_to_download.to_csv(index=False)
