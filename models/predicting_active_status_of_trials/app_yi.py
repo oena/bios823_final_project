@@ -42,9 +42,6 @@ def app():
         select_measure = st.selectbox("Please select a metric:",
                                       options=["Accuracy", "AUC", "Recall", "Precision",
                                                "F1", "Kappa", "MCC", "TT (Sec)"])
-        # compare_model_df1 = pd.melt(compare_model_df, id_vars=['Model'], var_name='Measurement', value_name='Score')
-        # fig = px.line(compare_model_df1, x="Measurement", y="Score", color="Model", hover_name="Model",
-        #               title='Measurement score of different models')
         fig = px.line(compare_model_df, x="Model", y=select_measure,
                       template="plotly_white",
                       title=f'Compare all models\' {select_measure}')
@@ -131,12 +128,12 @@ def app():
         try:
             p1.plotly_chart(fig2, use_container_width=True)
         except:
-            p1.write("not available")
+            p1.write("Not applicable for this classifier")
 
         try:
             p2.plotly_chart(fig_pr, use_container_width=True)
         except:
-            p2.write("not available")
+            p2.write("Not applicable for this classifier")
 
         p3.plotly_chart(fig_, use_container_width=True)
 
