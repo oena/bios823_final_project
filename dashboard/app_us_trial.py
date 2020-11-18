@@ -10,7 +10,7 @@ def app():
     @st.cache()
     def load_datasets():
         # All US clinical trials
-        data_df = pd.read_csv("cleaned_us_covid_studies_with_geo_092020.tsv", sep="\t")
+        data_df = pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_us_covid_studies_with_geo_092020.tsv", sep="\t")
         all_us_data = data_df.dropna()
         return all_us_data
 
@@ -104,11 +104,6 @@ def app():
     st.header("Explore ongoing clinical trial efforts in US")
 
     with st.beta_expander("Click here to expand more details about this page"):
-        st.subheader("Instructions for this page:")
-        st.markdown(
-        """
-        """)
-        st.write("")
         st.subheader("Some potential caveats to note:")
         st.markdown("- Adding geospatial data to some study locations was not possible in an automated fashion, "
                     "so they are not included in the plot below. \n "

@@ -14,48 +14,12 @@ import plotly.express as px
 # get data functions ###################################################################################################
 
 def get_df():
-    return pd.read_csv("dashboard/cleaned_data_for_viz.tsv", sep="\t")
-
-def get_gdf():
-    """
-    this function will load country geo data, which is necessary for creating map plot
-    """
-    # load the data of geo information
-    shapefile = '50m_cultural/ne_50m_admin_0_countries.shp'
-    gdf = gpd.read_file(shapefile)[['ADMIN', 'geometry']]
-    gdf = gdf[gdf.ADMIN != 'Antarctica']  # drop Antarctica since no people lives there
-    gdf['ADMIN'] = gdf.ADMIN.apply(lambda x: x.upper())
-
-    return gdf
-    
-def get_data_for_map(df=get_df(), gdf=get_gdf()):
-    country_count_df = (
-        df
-        # add criteria here
-        [['Location_Country']]
-        [(df['Location_Country'] != 'NAN') & (df['Location_Country'] != 'REPUBLIC OF')].
-        # the last criteria can be drop when we confirm what 'REPUBLIC OF' is
-        assign(count=1).
-        groupby(['Location_Country']).
-        agg('sum').
-        sort_values('count', ascending=False)
-    )
-
-    # equip data with geo info
-    geo_country_count_df = (
-        gdf.merge(country_count_df, left_on='ADMIN', right_on='Location_Country', how='left').
-        sort_values('count', ascending=False)
-    )
-
-    # Convert to geojson
-    geo_country_count_json = json.loads(geo_country_count_df.to_json())
-    return country_count_df, geo_country_count_df, geo_country_count_json
+    return pd.read_csv("https://github.com/oena/bios823_final_project/blob/master/dashboard/dashboard_data/cleaned_data_for_viz.tsv", sep="\t")
 
 # location viz functions ###############################################################################################
 
 def get_country_plot(country_count_df,
                      geo_country_count_df,
-                     geo_country_count_json,
                      center="world"):
     """
     this function generate the plot to demonstrate how many trial in the each countries
@@ -75,6 +39,9 @@ def get_country_plot(country_count_df,
     geo_plot:
         the plot demonstrate how many trial in the each countries
     """
+    # Convert to geojson
+    geo_country_count_json = json.loads(geo_country_count_df.to_json())
+    
     # Center of the Plot data
     regions = {
         'world': {"lat": 45, "lon": 0, 'zoom': 0.75},
@@ -304,7 +271,13 @@ def get_cat_plot(df=get_df(), var="Status", type="bar"):
 # test #################################################################################################################
 
 if __name__=="__main__":
-    get_country_plot(*get_data_for_map(),center='europe').show()
+    gdf = gpd.read_file("/Users/yuehan/Desktop/Duke/20Fall/BIOSTA823/final_project/dash/cleaned_data_for_map_with_geo.tsv"
+             ,GEOM_POSSIBLE_NAMES="geometry",KEEP_GEOM_COLUMNS="NO")
+    gdf["count"] = gdf["count"].replace({"":0})
+    gdf = gdf.astype({"count":"float"})
+    get_country_plot(pd.read_csv("cleaned_data_for_map.tsv", sep="\t"),
+                     gdf,
+                     center='europe').show()
     get_trail_duration_plot(sort_by="count",type = "bar").show()
     get_enrollment_plot(sort_by='Enrollment').show()
     get_cat_plot(var="Age",type="pie").show()

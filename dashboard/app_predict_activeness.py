@@ -27,11 +27,11 @@ import sys
 
 def app():
 
-    X_train = pd.read_csv("X_train.csv")
-    X_test = pd.read_csv("X_test.csv")
-    y_train = pd.read_csv("y_train.csv")
-    y_test = pd.read_csv("y_test.csv")
-    compare_model_df = pd.read_csv("compare_model_df.csv")
+    X_train = pd.read_csv("https://raw.githubusercontent.com/oena/bios823_final_project/master/dashboard/dashboard_data/X_train.csv")
+    X_test = pd.read_csv("https://raw.githubusercontent.com/oena/bios823_final_project/master/dashboard/dashboard_data/X_test.csv")
+    y_train = pd.read_csv("https://raw.githubusercontent.com/oena/bios823_final_project/master/dashboard/dashboard_data/y_train.csv")
+    y_test = pd.read_csv("https://raw.githubusercontent.com/oena/bios823_final_project/master/dashboard/dashboard_data/y_test.csv")
+    compare_model_df = pd.read_csv("https://raw.githubusercontent.com/oena/bios823_final_project/master/dashboard/dashboard_data/compare_model_df.csv")
 
     st.sidebar.subheader("Classifiers comparison:")
     select_measure = st.sidebar.selectbox("Please select a metric:",

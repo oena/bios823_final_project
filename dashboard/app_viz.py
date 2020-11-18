@@ -1,5 +1,8 @@
 import streamlit as st
 import pandas as pd
+import geopandas as gpd
+from shapely import wkt
+import numpy as np
 from datetime import datetime
 import json
 from dateutil.relativedelta import relativedelta
@@ -7,9 +10,20 @@ import viz
 
 def app():
     # methods to load and change data
-    @st.cache()
+    @st.cache(allow_output_mutation=True)
     def load_datasets():
-        return pd.read_csv("dashboard/cleaned_data_for_viz.tsv", sep="\t")
+        return pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_viz.tsv", sep="\t")
+        
+    @st.cache(allow_output_mutation=True)
+    def loag_data_for_map():
+        return pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_map.tsv", sep="\t")
+    
+    @st.cache(allow_output_mutation=True)
+    def load_geo_data():
+        df =pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_map_with_geo.tsv",sep="\t")
+        df['geometry'] = df['geometry'].apply(wkt.loads)
+        gdf = gpd.GeoDataFrame(df, geometry='geometry')
+        return gdf
     
     def filter_dataset(df, start, end, study_type):
         df = (
@@ -24,7 +38,9 @@ def app():
     # load in data
     df_origin = load_datasets()
     df = df_origin.copy()
-    gdf = viz.get_gdf()
+    
+    map_data = loag_data_for_map()
+    gdf = load_geo_data()
 
     # sidebar control
     st.sidebar.subheader("Choose time interval:")
@@ -85,10 +101,35 @@ def app():
                                     "oceania"
                                     ],
                                     format_func=options_show)
+                                    
+        advanced_select = c2.checkbox("Advanced select")
+        if advanced_select:
+            map_data.shape[0]
+            number_to_display = c2.number_input("Select top countires to display", min_value = 1, max_value = map_data.shape[0], value = 5, step = 1)
+            countries = c2.multiselect("Choose the countries you interested in:", map_data.head(number_to_display)
+    .Location_Country.to_list(), default = map_data.head(number_to_display)
+    .Location_Country.to_list())
+                    
+            countries_select_map_data = [x in countries for x in map_data.Location_Country]
+            map_data["if_select"] = countries_select_map_data
+            countries_select_gdf = [x in countries for x in gdf.ADMIN]
+            gdf["if_select"] = countries_select_gdf
 
-        c1.plotly_chart(viz.get_country_plot(*viz.get_data_for_map(df, gdf), center=radio_display), use_container_width=True)
+            map_data = map_data[map_data["if_select"] == True].head(number_to_display)
+
+            gdf = gdf[gdf["if_select"] == True].head(number_to_display)
+
+                
+            map_data = map_data.head(number_to_display)
+
+            gdf = gdf.head(number_to_display)
+        
+        show_table = c2.checkbox("Show table")
+        
+        c1.plotly_chart(viz.get_country_plot(map_data, gdf, center=radio_display), use_container_width=True)
+        if show_table:
+            c1.write(map_data.drop(columns = "if_select"))
     
-    st.write("")
     
     ## bar and pie plot
     st.subheader(f'Bar and pie chart for count of COVID-19 trials by **{attribute_display.lower()}** attribution')
@@ -123,13 +164,13 @@ def app():
             pie_plot = viz.get_cat_plot(df=df, var=attribute_display, type="pie")
 
             
-        bar_plot.update_layout(margin={"r": 0, "t": 10, "l": 0, "b": 0},
+        bar_plot.update_layout(margin={"r": 0, "t": 30, "l": 0, "b": 0},
                                height=400,
                                plot_bgcolor='rgba(0,0,0,0)')
         
         c3.plotly_chart(bar_plot, use_container_width=True)
         
-        pie_plot.update_layout(margin={"r": 0, "t": 10, "l": 0, "b": 0},
+        pie_plot.update_layout(margin={"r": 0, "t": 30, "l": 0, "b": 0},
                                height=400,
                                plot_bgcolor='rgba(0,0,0,0)')
         c4.plotly_chart(pie_plot, use_container_width=True)
