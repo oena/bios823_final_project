@@ -12,8 +12,8 @@ def app():
     )
     st.sidebar.subheader("[Link](https://github.com/oena/bios823_final_project) to GitHub")
     
-    st.title('Welcome to COVID-19 Trial Dashboard!')
-    st.header('Introduction about this dashboard')
+    st.title('Exploring COVID19-related clinical trials in the US and beyond')
+    st.header('About this dashboard')
     
     st.write("The overall goal of the dashboard is twofold; first, to provide a tool to explore COVID-19 related trials happening worldwide, and second, to provide a tool for people in the US to identify trials of interest to them by location. We have enabled this by providing: a display of trials happening worldwide ('Overall trials'), Trials happening in the United States ('US trials'), Clustering of Trials by different measures of similarity ('Trials Clustering'), and prediction about the activity level (open or not) of available trials ('Activeness predicting').")
     
