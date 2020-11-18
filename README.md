@@ -46,6 +46,7 @@ The final product will be a dashboard displaying several fields of the informati
 
 By October 9th: 
 - Extract relevant fields from trial site, and tidy data (Oana) 
+- Exploratory analyses (All) 
 
 By November 5th:
 - Set up SQL server and load cleaned data (Yi) 
@@ -55,5 +56,16 @@ By November 20th:
 - Set up dashboard with steramlit (Oana, Yue) 
 - Work on models & visualizations thereof (Yue, Yi) 
 - Explore ways to deploy streamlit dashboards & deploy dashboard (Oana) 
-- Clean up repo (all) 
+- Clean up repo (All) 
 
+## Repository structure
+
+- **conda_environments/**: YAML files to recreate consistent environments we used in various stages of the project. 
+- **dashboard/**: Dashboard files and assets 
+  - dashboard/
+- **data_cleaning/**: Scripts used to clean and process data used 
+- **exploratory_analyses/**: Notebooks containing exploratory analyses performed
+- **models/**: Machine learning models incorporated into dashboard 
+  - models/clustering_trial_features/: Notebooks relevant to clustering trials by similarity of features. 
+  - models/predicting_active_status_of_trials/: Assets relevant to the supervised learning exercise of predicting trial activity status from trial features
+- **visualization/**: Notebooks of exploratory plotly visualizations before putting together the dashboard
