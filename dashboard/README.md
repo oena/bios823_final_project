@@ -1,7 +1,16 @@
-To run the dashboard locally, you need all py scripts with prefix `app_` with two auxiliary files: `viz.py` and `cluster.py`. 
+## Dashboard 
 
-The data for the dashboard are all in `dashboard_data` folder. Since the dashboard load data from this github repo, you don't need to download the data to run the dashboard locally.
+The deployed dashboard can be found [here](https://share.streamlit.io/oena/bios823_final_project/dashboard/app_main.py). 
 
-When you finish downloading all needed py scripts in one folder, you can type `streamlit run app_main.py` in the terminal to run the dashboard locally.
+This folder contains:
+- All the files comprising different pages of the dashboard app (these begin with `app_`)
+- Two auxiliary files: `viz.py` and `cluster.py`
+- Dashboard assets (input files for visualizations, etc). Since expensive computations can slow streamlit apps down, we tried to minimize these if possible. 
 
-The link to deployed dashboard: https://share.streamlit.io/oena/bios823_final_project/dashboard/app_main.py
+### Running the dashboard locally 
+
+You can run this dashboard locally (after cloning the repository) by: 
+
+1. Activating the python3_env conda environment (as described in the [conda environment directory](https://github.com/oena/bios823_final_project/tree/master/conda_environments)). 
+
+2. From this directory, type `streamlit run app_main.py` in the terminal. 
