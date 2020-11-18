@@ -1,6 +1,8 @@
-# BIOS823 Final Project:  Team Polar Bear
+# BIOS823 Final Project: Exploring COVID-19 related clinical trials in the U.S. and Beyond 
 
-## Members
+You can explore the deployed version of this app [here](https://share.streamlit.io/oena/bios823_final_project/dashboard/app_main.py). 
+
+## Members (Team Polar Bear)
 
 Oana Enache (Biostatistics Department, Duke University School of Medicine) 
 
@@ -10,11 +12,19 @@ Yue Han (Economics Department, Duke University)
 
 ## Project information
 
+### Project objective and audience
+
+Our intended audience for this project is people in the United States who might want to learn more about COVID-19-related clinical trials that are happening in general and/or to find information on trials in relevant U.S. locations to them. 
+
+Consequently, our objective with this project was to:
+
+1. Enable users to explore the clinical trials relevant to COVID-19 that are happening and that have happened (through both interactive visualizations and machine learning models using trial features).
+
+2. Enable users to find trial information by specific location in the United States. 
+
 ### Data set
 
-The data set we will be using is the information on [ongoing clinical trials related to COVID-19 from clinicaltrials.gov](https://clinicaltrials.gov/ct2/results?cond=COVID-19). In raw form, this data is in tabular format but has very messy data fields. 
-
-### Project objective and benefits
+The data set we will be using is the information on [ongoing clinical trials related to COVID-19 from clinicaltrials.gov](https://clinicaltrials.gov/ct2/results?cond=COVID-19). In raw form, this data is in tabular format but has very messy data fields and many columns. 
 
 #### Data product and user benefit
 
@@ -26,25 +36,24 @@ The final product will be a dashboard displaying several fields of the informati
 
 2. Extract relevant fields from clinical trials site and tidy data. 
 
-3. Load cleaned data into a SQL server. 
+3. Create relevant visualizations using `plotly`. 
 
-4. Create relevant visualizations using `plotly`. 
+5. Create a dashboard containing visualizations using `streamlit`. 
 
-5. Create a dashboard containing visualizations using `dash`. 
-
-6. Deploy dashboard on AWS. 
+6. Deploy dashboard on streamlit's sharing platform. 
 
 #### Roles, responsibilities, and milestones
 
 By October 9th: 
 - Extract relevant fields from trial site, and tidy data (Oana) 
 
-By October 16th:
+By November 5th:
 - Set up SQL server and load cleaned data (Yi) 
 - Create relevant visualizatiions with plotly (Yue) 
 
-By October 30th:
-- Set up dashboard containing visualizations with Dash (Oana) 
-- Migrate SQL server to AWS (Yi) 
-- Set up dashboard on AWS (Oana, Yue) 
+By November 20th:
+- Set up dashboard with steramlit (Oana, Yue) 
+- Work on models & visualizations thereof (Yue, Yi) 
+- Explore ways to deploy streamlit dashboards & deploy dashboard (Oana) 
+- Clean up repo (all) 
 
