@@ -53,7 +53,7 @@ By November 5th:
 - Create relevant visualizatiions with plotly (Yue) 
 
 By November 20th:
-- Set up dashboard with steramlit (Oana, Yue) 
+- Set up dashboard with steramlit (Oana, Yue, Yi) 
 - Work on models & visualizations thereof (Yue, Yi) 
 - Explore ways to deploy streamlit dashboards & deploy dashboard (Oana) 
 - Clean up repo (All) 
