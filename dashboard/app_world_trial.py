@@ -14,9 +14,17 @@ def app():
     def load_datasets():
         return pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_viz.tsv", sep="\t")
         
-    @st.cache(allow_output_mutation=True)
-    def loag_data_for_map():
-        return pd.read_csv("https://media.githubusercontent.com/media/oena/bios823_final_project/master/dashboard/dashboard_data/cleaned_data_for_map.tsv", sep="\t")
+    def filter_data_for_map(df):
+        country_count_df = (
+            df[['Location_Country']]
+            [df['Location_Country'] != 'NAN'].
+            assign(count=1).
+            groupby(['Location_Country']).
+            agg('sum').
+            sort_values('count', ascending=False).
+            reset_index()
+        )
+        return country_count_df
     
     @st.cache(allow_output_mutation=True)
     def load_geo_data():
@@ -38,9 +46,6 @@ def app():
     # load in data
     df_origin = load_datasets()
     df = df_origin.copy()
-    
-    map_data = loag_data_for_map()
-    gdf = load_geo_data()
 
     # sidebar control
     st.sidebar.subheader("Choose time interval:")
@@ -58,13 +63,16 @@ def app():
 
     if attribute_display == "Duration" or attribute_display == "Enrollment":
         sort_by = st.sidebar.radio("Bar chart X axis's order:", options=["Count of trial's order", "Attribute's order"])
-
+    
+    # filter data
     df = filter_dataset(df, start, end, study_type)
-    total_trials = df.shape[0]
+    map_data = filter_data_for_map(df)
+    gdf = load_geo_data().drop(columns="count").merge(map_data, left_on='ADMIN', right_on='Location_Country', how='left').sort_values('count', ascending=False)
     
     # title
     st.title("How COVID-19 trials going on all over the world?")
-    
+
+    total_trials = df.shape[0]
     st.header(f'Total trials of {study_type.lower()} study type(s) from {start} to {end}: **{total_trials}**')
     
     with st.beta_expander("Click here to expand more details about this page"):

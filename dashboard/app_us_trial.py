@@ -127,6 +127,7 @@ def app():
     st.header("Explore ongoing clinical trial efforts in US")
 
     with st.beta_expander("Click here to expand more details about this page"):
+        st.markdown("This page displays some practical information about trials currently happening in the United States. Feel free to filter information on location, trial phase, and other features relevant to you; when you're done (and if you'd like to follow up on any trials), you can download your results to csv.")
         st.subheader("Some potential caveats to note:")
         st.markdown("- Adding geospatial data to some study locations was not possible in an automated fashion, "
                     "so they are not included in the plot below. \n "
