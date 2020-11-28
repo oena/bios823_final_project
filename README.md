@@ -1,4 +1,4 @@
-# BIOS823 Final Project: Exploring COVID-19 related clinical trials in the U.S. and Beyond 
+# BIOS823 Final Project: Exploring COVID-19 related clinical trials in the U.S. and Beyond  [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/oena/bios823_final_project/dashboard/app_main.py)
 
 You can explore the deployed version of this app [here](https://share.streamlit.io/oena/bios823_final_project/dashboard/app_main.py). 
 
